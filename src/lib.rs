@@ -26,7 +26,7 @@ pub fn run(config: Config) -> Result<(), Box<dyn Error>> {
     let mut contents = String::new();
     f.read_to_string(&mut contents)?;
 
-    for line in search(&config.query, &contents) {
+    for line in search_case_insensitive(&config.query, &contents) {
         println!("{}", line);
     }
 
