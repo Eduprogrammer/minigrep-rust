@@ -26,11 +26,28 @@ pub fn run(config: Config) -> Result<(), Box<dyn Error>> {
     let mut contents = String::new();
     f.read_to_string(&mut contents)?;
 
-    for line in search_case_insensitive(&config.query, &contents) {
+     // 🔹 armazenamos as linhas encontradas em results
+    let results = search_case_insensitive(&config.query, &contents);
+
+    // 🔹 imprimindo cada linha encontrada
+    for line in &results {
         println!("{}", line);
     }
 
+    // 🔹 nova parte: contar o total de ocorrências da palavra no texto inteiro
+    let total_count = contents
+        .to_lowercase() // para buscar sem diferenciar maiúsculas/minúsculas
+        .matches(&config.query.to_lowercase())
+        .count();
+
+    // 🔹 nova parte: mostrar resumo no final
+    println!(
+        "\nResumo: a palavra '{}' apareceu {} vez(es) no texto.",
+        config.query, total_count
+    );
+
     Ok(())
+    
 }
 
 fn search<'a>(query: &str, contents: &'a str) -> Vec<&'a str> {
